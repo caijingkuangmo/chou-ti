@@ -77,6 +77,7 @@ class Comment(db.Model):
 
 
 class SendCode(db.Model):
+
     __tablename__ = "sendcode"
 
     # 注册时验证码信息
