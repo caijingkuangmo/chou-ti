@@ -15,8 +15,16 @@ from ..services.register import *
     临时存储邮箱和验证码，    时效性考虑（放后）   
 '''
 
-class Register(Resource):
 
+class Register(Resource):
+    '''
+    {
+        "email": "1174653067@qq.com",
+        "username": "seven",
+        "password": "123456",
+        "code": "4C2V"
+    }
+    '''
     def post(self):
         params = request.json
         if not params.get('email', None) or not params.get('username', None) \
@@ -32,12 +40,16 @@ class Register(Resource):
     第一步：获取验证码   携带邮箱，判断邮箱是否在临时表中，有就不发送邮件（提示已发送）
                                                 没有就发送，并记录到临时表中（还要判断是否注册过）
     
-    第二步：注册，携带所有的信息，邮箱，验证码，用户名，密码
+    第二步：注册，携带所有的信息，邮箱，验证码，用户名，密码    对用户名的唯一性进行判断（放后）
                 判断邮箱和验证码是否正确，正确就返回在用户表插入信息，删除临时表记录
 '''
 
 class ValidCode(Resource):
-
+    '''
+    {
+	    "email":"1174653067@qq.com"
+    }
+    '''
     def post(self):
         params = request.json
         email = params.get('email', None)
