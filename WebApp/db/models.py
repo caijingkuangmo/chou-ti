@@ -2,9 +2,17 @@
 #! /usr/bin/env python
 # __author__ = 'seven'
 
+from datetime import datetime
+
 from __init__ import db
 # from __init__ import create_app
 
+
+'''
+当报这个错时，放开下列代码
+sqlalchemy.exc.InvalidRequestError: Table 'userinfo' is already defined for this MetaData instance.
+'''
+# db.metadata.clear()
 
 class UserInfo(db.Model):
 
@@ -14,7 +22,8 @@ class UserInfo(db.Model):
     username = db.Column(db.String(32), unique=True)
     password = db.Column(db.String(32))
     email = db.Column(db.String(32), unique=True)
-    ctime = db.Column(db.TIMESTAMP)
+    # ctime = db.Column(db.TIMESTAMP)
+    ctime = db.Column(db.DateTime, nullable=False, default=datetime.utcnow, onupdate=datetime.utcnow)
 
     __table_args__ = (
         db.Index('ix_user_pwd', 'username', 'password'),
@@ -35,7 +44,8 @@ class News(db.Model):
     nid = db.Column(db.Integer, primary_key=True, autoincrement=True)
     user_info_id = db.Column(db.Integer, db.ForeignKey("userinfo.nid"))
     news_type_id = db.Column(db.Integer, db.ForeignKey("newstype.nid"))
-    ctime = db.Column(db.TIMESTAMP)
+    # ctime = db.Column(db.TIMESTAMP)
+    ctime = db.Column(db.DateTime, nullable=False, default=datetime.utcnow, onupdate=datetime.utcnow)
     title = db.Column(db.String(32))
     url = db.Column(db.String(128))
     content = db.Column(db.String(150))
@@ -47,7 +57,8 @@ class Favor(db.Model):
     nid = db.Column(db.Integer, primary_key=True, autoincrement=True)
     user_info_id = db.Column(db.Integer, db.ForeignKey('userinfo.nid'))
     news_id = db.Column(db.Integer, db.ForeignKey('news.nid'))
-    ctime = db.Column(db.TIMESTAMP)
+    # ctime = db.Column(db.TIMESTAMP)
+    ctime = db.Column(db.DateTime, nullable=False, default=datetime.utcnow, onupdate=datetime.utcnow)
 
     __table_args__ = (
         db.UniqueConstraint('user_info_id', 'news_id', name='uix_uid_nid'),
@@ -69,7 +80,8 @@ class Comment(db.Model):
     # 踩一下
     down = db.Column(db.Integer)
     # 创建时间
-    ctime = db.Column(db.TIMESTAMP)
+    # ctime = db.Column(db.TIMESTAMP)
+    ctime = db.Column(db.DateTime, nullable=False, default=datetime.utcnow, onupdate=datetime.utcnow)
     # 发表设备：手机，电脑，苹果....
     device = db.Column(db.String(32))
     # 发表内容
@@ -86,7 +98,8 @@ class SendCode(db.Model):
     code = db.Column(db.String(4))
     status = db.Column(db.Integer)  #状态码，0表示未注册，1成功，2拉黑
     # 验证码的有效时间
-    stime = db.Column(db.TIMESTAMP)  # 发送时间
+    # stime = db.Column(db.TIMESTAMP)  # 发送时间
+    stime = db.Column(db.DateTime, nullable=False, default=datetime.utcnow, onupdate=datetime.utcnow)
 
 
 # app = create_app()
@@ -97,6 +110,7 @@ class SendCode(db.Model):
 # def drop_all():
 #     with app.app_context():
 #         db.drop_all()
-#
-#
+
+
+# drop_all()
 # create_all()

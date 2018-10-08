@@ -44,7 +44,8 @@ def send_code(ema):
         print("发送成功")
         return code
 
-    except s.SMTPException as e:
+    # except s.SMTPException as e:
+    except:
         print("发送失败")
     finally:
         s.quit()
