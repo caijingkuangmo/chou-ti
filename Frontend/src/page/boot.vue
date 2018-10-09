@@ -1,5 +1,6 @@
 <template>
     <div class="container">
+        <iframe class="nine" src="/boot" @load="get" ref="bokeyuan" frameborder="0"></iframe>
         <el-button @click="forward">前进</el-button>
         <el-button @click="backoff">后退</el-button>
         <el-button @click="redirect">跳转</el-button>
@@ -27,6 +28,9 @@ export default {
             
         }
     },
+    mounted(){
+        
+    },
     methods: {
         forward(){
             this.$router.go(-1);
@@ -36,9 +40,14 @@ export default {
         },
         redirect(){
             this.$router.push('/');
+        },
+        get(){
+            // console.log(this.$refs.bokeyuan);
+            console.log("589599",document.getElementsByClassName("nine")[0])
+            console.log(document.getElementsByClassName("nine")[0].getElementsByTagName("html"))
         }
-
     }
+
 }
 </script>
 
