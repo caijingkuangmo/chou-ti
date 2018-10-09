@@ -29,4 +29,7 @@ def create_app():
     from news import blueprint as news_bp
     app.register_blueprint(news_bp, url_prefix='/news')
 
+    from publish import blueprint as publish_bp
+    app.register_blueprint(publish_bp, url_prefix='/publish')
+
     return app
