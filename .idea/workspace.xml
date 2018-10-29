@@ -2,9 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="feac6efb-4a98-4d1c-ad84-43af62388d5d" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/WebApp/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp/application.py" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/application.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp/test.py" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/test.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp/infrastructure/account.py" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/infrastructure/account.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -15,15 +13,6 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="375">
-      <file leaf-file-name="register.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/WebApp/account/resources/register.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1566">
-              <caret line="62" column="40" selection-start-line="62" selection-start-column="40" selection-end-line="62" selection-end-column="40" />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="application.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/WebApp/application.py">
           <provider selected="true" editor-type-id="text-editor">
@@ -45,15 +34,24 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="views.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="views.py" pinned="false" current-in-tab="false">
         <entry file="file://$USER_HOME$/PycharmProjects/flask_first/venv/Lib/site-packages/flask/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="376">
-              <caret line="148" column="36" lean-forward="true" selection-start-line="148" selection-start-column="36" selection-end-line="148" selection-end-column="36" />
+            <state relative-caret-position="187">
+              <caret line="141" column="48" lean-forward="true" selection-start-line="141" selection-start-column="48" selection-end-line="141" selection-end-column="48" />
               <folding>
                 <element signature="e#234#262#0" expanded="true" />
                 <element signature="e#3837#4455#0" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="account.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/WebApp/infrastructure/account.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="243">
+              <caret line="32" column="31" lean-forward="true" selection-start-line="32" selection-start-column="31" selection-end-line="32" selection-end-column="31" />
             </state>
           </provider>
         </entry>
@@ -128,6 +126,7 @@
         <option value="$PROJECT_DIR$/WebApp/application.py" />
         <option value="$PROJECT_DIR$/WebApp/__init__.py" />
         <option value="$PROJECT_DIR$/WebApp/test.py" />
+        <option value="$PROJECT_DIR$/WebApp/infrastructure/account.py" />
       </list>
     </option>
   </component>
@@ -167,6 +166,12 @@
               <item name="WebApp" type="462c0819:PsiDirectoryNode" />
               <item name="account" type="462c0819:PsiDirectoryNode" />
               <item name="resources" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="chou-ti" type="b2602c69:ProjectViewProjectNode" />
+              <item name="chou-ti" type="462c0819:PsiDirectoryNode" />
+              <item name="WebApp" type="462c0819:PsiDirectoryNode" />
+              <item name="infrastructure" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -252,7 +257,8 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="681" y="126" width="1704" height="915" extended-state="0" />
+    <frame x="861" y="201" width="1704" height="915" extended-state="0" />
+    <editor active="true" />
     <layout>
       <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.16084337" />
       <window_info anchor="bottom" id="TODO" order="6" />
@@ -408,13 +414,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/WebApp/infrastructure/account.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret line="3" lean-forward="true" selection-start-line="3" selection-end-line="3" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/WebApp/readme.txt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="189">
@@ -490,12 +489,19 @@
     </entry>
     <entry file="file://$USER_HOME$/PycharmProjects/flask_first/venv/Lib/site-packages/flask/views.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="376">
-          <caret line="148" column="36" lean-forward="true" selection-start-line="148" selection-start-column="36" selection-end-line="148" selection-end-column="36" />
+        <state relative-caret-position="187">
+          <caret line="141" column="48" lean-forward="true" selection-start-line="141" selection-start-column="48" selection-end-line="141" selection-end-column="48" />
           <folding>
             <element signature="e#234#262#0" expanded="true" />
             <element signature="e#3837#4455#0" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/WebApp/infrastructure/account.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="243">
+          <caret line="32" column="31" lean-forward="true" selection-start-line="32" selection-start-column="31" selection-end-line="32" selection-end-column="31" />
         </state>
       </provider>
     </entry>

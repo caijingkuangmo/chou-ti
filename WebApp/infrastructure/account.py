@@ -26,7 +26,7 @@ def send_code(ema):
     import smtplib
     from email.mime.text import MIMEText
 
-    msg_from = '1174653067@qq.com'  # 发送方邮箱
+    msg_from = '117465@qq.com'  # 发送方邮箱
     passwd = 'qrmzvmamfloctfhicz'  # 填入发送方邮箱的授权码
     msg_to = ema  # 收件人邮箱
 
