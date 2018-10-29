@@ -59,8 +59,32 @@
 #     drop_db()
 #     init_db()
 
-import hashlib
+# import hashlib
+#
+# m = hashlib.md5()
+# m.update(b"123456")
+# print(m.hexdigest())
 
-m = hashlib.md5()
-m.update(b"123456")
-print(m.hexdigest())
+class MyType(type):
+    def __init__(self, *args, **kwargs):
+        print('init')
+        super(MyType, self).__init__(*args, **kwargs)
+
+    def __call__(self, *args, **kwargs):
+        print('call本质：调用类的__new__,在调用init方法')
+        return super(MyType, self).__call__(*args, **kwargs)
+
+
+class Foo(metaclass=MyType):
+    def __call__(self, *args, **kwargs):
+        print('123')
+
+
+class Bar(Foo):
+    def __call__(self, *args, **kwargs):
+        print('456')
+
+
+Foo()  # 实例化对象，会执行负责创建类的type里的__call__方法
+obj = Bar()
+obj()  # 对象+（） 执行父类的里__call__方法

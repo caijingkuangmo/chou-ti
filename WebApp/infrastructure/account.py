@@ -27,7 +27,7 @@ def send_code(ema):
     from email.mime.text import MIMEText
 
     msg_from = '1174653067@qq.com'  # 发送方邮箱
-    passwd = 'rmzvmamfloctfhic'  # 填入发送方邮箱的授权码
+    passwd = 'qrmzvmamfloctfhicz'  # 填入发送方邮箱的授权码
     msg_to = ema  # 收件人邮箱
 
     subject = "chou-ti验证码"  # 主题

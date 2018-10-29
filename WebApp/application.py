@@ -13,5 +13,6 @@ app = create_app()
 
 
 if __name__ == "__main__":
+    app.wsgi_app
     host_port = int(os.environ.get('host_port', 8887))
     app.run(port=host_port, debug=app.debug, threaded=True)
