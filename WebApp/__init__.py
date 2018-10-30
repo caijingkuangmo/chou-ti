@@ -7,7 +7,6 @@ from __future__ import unicode_literals
 from __future__ import absolute_import
 
 from flask import Flask, views
-views.MethodView.as_view()
 from flask_sqlalchemy import SQLAlchemy
 # from flask_login.login_manager import LoginManager
 #
