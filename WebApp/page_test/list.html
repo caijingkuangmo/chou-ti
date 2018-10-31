@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>show</title>
+    <style>
+        .page-nums li{
+            display:inline-block;
+            margin-left:10px;
+        }
+        .page-nums li a{
+
+        }
+        .active-page{
+            background: yellow;
+        }
+
+    </style>
+</head>
+<body>
+    {% for line in data %}
+        <li>
+            <span>{{line.username}}</span>
+            <span>{{line.email}}</span>
+        </li>
+    {% endfor %}
+
+    {% autoescape off %}
+    <div class="page-nums">
+        {{ data.bulid_page_number_html }}
+    </div>
+    {% endautoescape  %}
+</body>
+</html>
