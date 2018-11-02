@@ -29,6 +29,9 @@ class PageNotAnInteger(InvalidPage):
 class EmptyPage(InvalidPage):
     pass
 
+class NoDataPage(InvalidPage):
+    pass
+
 
 '''
 使用:
@@ -41,7 +44,14 @@ page = paginator.page(page_num)
 class Paginator:
 
     def __init__(self, data_list, per_page_size, full_url_path, page_number=11):
-        self.data_list= data_list
+        '''
+
+        :param data_list:  总数据
+        :param per_page_size:  每页显示数据条数
+        :param full_url_path:
+        :param page_number: 最多显示的页码个数
+        '''
+        self.data_list = data_list
         self.per_page_size = int(per_page_size)
         self.page_number = page_number
         #比如 /index/?o=-1
@@ -57,8 +67,6 @@ class Paginator:
 
     @property
     def num_pages(self):
-        if self.count == 0:
-            return
         from math import ceil
         return ceil(self.count / self.per_page_size)
 
@@ -85,6 +93,10 @@ class Paginator:
             number = int(number)  #比如1.0
         except (TypeError, ValueError):
             raise PageNotAnInteger('当前页数不为一个整数')
+
+        if self.num_pages == 0:  #考虑count为0的情况
+            raise NoDataPage('未获取到数据')
+
         if number < 1:
             raise EmptyPage('当前页数小于1')
         if number > self.num_pages:
@@ -95,9 +107,19 @@ class Paginator:
         '''返回当前页实例'''
         return Page(*args, **kwargs)
 
+    @property
+    def empty_page(self):
+        return self._get_page([], 0, self)
+
 #单页类
 class Page(object):
     def __init__(self, current_page_data_list, number, paginator):
+        '''
+        封装当前页数据
+        :param current_page_data_list: 当前页的数据
+        :param number: 当前页码
+        :param paginator: 整个数据分页器
+        '''
         self.data_list = current_page_data_list
         self.number = number
         self.paginator = paginator
@@ -177,41 +199,53 @@ class Page(object):
 
     def bulid_page_number_html(self):
         '''构建页面前端代码'''
+        if self.paginator.num_pages:
 
-        list_page = []
-        if self.number == 1:  #上一页
-            prev = '<li><a class="pre-page" href="javascript:void(0);">上一页</a></li>'
-        else:
-            prev = '<li><a class="pre-page" href="%s">上一页</a></li>' % (self.url_temp.format(full_url_path=self.paginator.full_url_path, page=self.number - 1),)
+            list_page = []
 
-        list_page.append(prev)
+            #首页
+            head = '<li><a class="head-page" href="%s">首页</a></li>' %(self.url_temp.format(full_url_path=self.paginator.full_url_path, page=1),)
+            list_page.append(head)
 
-        for p in self.start_end_page_range:
-            if p == self.number:
-                temp = '<li><a class="active-page" href="%s">%s</a></li>' % (self.url_temp.format(full_url_path=self.paginator.full_url_path, page=p), p)
+            if self.number == 1:  #上一页
+                prev = '<li><a class="pre-page" href="javascript:void(0);">上一页</a></li>'
             else:
-                temp = '<li><a class="li-page" href="%s">%s</a></li>' % (self.url_temp.format(full_url_path=self.paginator.full_url_path, page=p), p)
-            list_page.append(temp)
+                prev = '<li><a class="pre-page" href="%s">上一页</a></li>' % (self.url_temp.format(full_url_path=self.paginator.full_url_path, page=self.number - 1),)
 
-        if self.number == self.paginator.num_pages: #下一页
-            nex = '<li><a class="next-page" href="javascript:void(0);">下一页</a></li>'
-        else:
-            nex = '<li><a class="next-page" href="%s">下一页</a></li>' % (self.url_temp.format(full_url_path=self.paginator.full_url_path, page=self.number + 1),)
-        list_page.append(nex)
+            list_page.append(prev)
 
-        # 跳转
-        # jump = """<input type='text' /><a onclick="Jump('%s',this);">GO</a>""" % ('/index/')
-        # script = """<script>
-        #         function Jump(baseUrl,ths){
-        #             var val = ths.previousElementSibling.value;
-        #             if(val.trim().length>0){
-        #                 location.href = baseUrl + val;
-        #             }
-        #         }
-        #         </script>"""
+            for p in self.start_end_page_range:
+                if p == self.number:
+                    temp = '<li><a class="active-page" href="%s">%s</a></li>' % (self.url_temp.format(full_url_path=self.paginator.full_url_path, page=p), p)
+                else:
+                    temp = '<li><a class="li-page" href="%s">%s</a></li>' % (self.url_temp.format(full_url_path=self.paginator.full_url_path, page=p), p)
+                list_page.append(temp)
 
-        str_page = "".join(list_page)
-        return str_page
+            if self.number == self.paginator.num_pages: #下一页
+                nex = '<li><a class="next-page" href="javascript:void(0);">下一页</a></li>'
+            else:
+                nex = '<li><a class="next-page" href="%s">下一页</a></li>' % (self.url_temp.format(full_url_path=self.paginator.full_url_path, page=self.number + 1),)
+            list_page.append(nex)
+
+            #尾页
+            tail = '<li><a class="tail-page" href="%s">尾页</a></li>' %(self.url_temp.format(full_url_path=self.paginator.full_url_path, page=self.paginator.num_pages),)
+            list_page.append(tail)
+
+            # 跳转
+            # jump = """<input type='text' /><a onclick="Jump('%s',this);">GO</a>""" % ('/index/')
+            # script = """<script>
+            #         function Jump(baseUrl,ths){
+            #             var val = ths.previousElementSibling.value;
+            #             if(val.trim().length>0){
+            #                 location.href = baseUrl + val;
+            #             }
+            #         }
+            #         </script>"""
+
+            str_page = "".join(list_page)
+            return str_page
+
+        return ""
 
 
 

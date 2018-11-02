@@ -1,6 +1,6 @@
 from django.shortcuts import render,HttpResponse
 from app01.models import *
-from app01.paginator import Paginator, EmptyPage, PageNotAnInteger
+from app01.paginator import Paginator, EmptyPage, PageNotAnInteger, NoDataPage
 
 # Create your views here.
 from django.db import models
@@ -29,6 +29,8 @@ def show(request):
         data = paginator.page(1)
     except EmptyPage:
         data = paginator.page(paginator.num_pages)
+    except NoDataPage:
+        data = paginator.empty_page
     return render(request, 'list.html',{'data':data})
 
 

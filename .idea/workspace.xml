@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="feac6efb-4a98-4d1c-ad84-43af62388d5d" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/WebApp/page_test/list.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/WebApp/page_test/views.py" afterDir="false" />
-    </list>
+    <list default="true" id="feac6efb-4a98-4d1c-ad84-43af62388d5d" name="Default" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -91,9 +88,9 @@
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds">
-    <option name="x" value="644" />
-    <option name="y" value="219" />
+  <component name="ProjectFrameBounds" extendedState="1">
+    <option name="x" value="211" />
+    <option name="y" value="176" />
     <option name="width" value="1197" />
     <option name="height" value="917" />
   </component>
@@ -132,13 +129,15 @@
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\Users\seven\Desktop\chou-ti\chou-ti\WebApp\security_test" />
-      <recent name="C:\Users\seven\Desktop\chou-ti\chou-ti\WebApp" />
-    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\seven\Desktop\chou-ti\chou-ti\WebApp\security_access\errors" />
       <recent name="C:\Users\seven\Desktop\chou-ti\chou-ti\WebApp\security_access\settings" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\seven\Desktop\chou-ti\chou-ti\WebApp\page_test" />
+      <recent name="C:\Users\seven\Desktop\chou-ti\chou-ti\WebApp\page" />
+      <recent name="C:\Users\seven\Desktop\chou-ti\chou-ti\WebApp\security_test" />
+      <recent name="C:\Users\seven\Desktop\chou-ti\chou-ti\WebApp" />
     </key>
   </component>
   <component name="RunDashboard">
