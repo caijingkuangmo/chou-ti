@@ -1,23 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>list</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="/static/bootstrap/css/bootstrap.css">
-    <script src="/static/js/jquery-1.12.4.min.js"></script>
-    <style>
-        .filter a{
-            text-decoration: none;
-            color: grey;
-        }
+{% extends 'base.html' %}
 
-        .active{
-            color: rebeccapurple!important;
-        }
-    </style>
-</head>
-<body>
+{% block sub-css %}
+<link rel="stylesheet" href="/static/css/list.css">
+{% endblock %}
+
+{% block con %}
     <h4>数据列表</h4>
     <div class="container">
         <div class="row">
@@ -84,6 +71,9 @@
             </div>
         </div>
     </div>
+{% endblock %}
+
+{% block sub-js %}
     <script>
         $('#choice').click(function(){
             if($(this).prop("checked")) {
@@ -93,6 +83,4 @@
             }
         })
     </script>
-
-</body>
-</html>
+{% endblock %}

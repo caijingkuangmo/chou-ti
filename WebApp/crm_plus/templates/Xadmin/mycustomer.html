@@ -1,11 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-</head>
-<body>
+{% extends 'base.html' %}
+
+{% block con %}
 <h4>我的客户</h4>
 <ul>
     {% for customer_distrbute in customer_distrbute_list %}
@@ -13,7 +8,5 @@
        {{ customer_distrbute.customer }}---{{ customer_distrbute.date }}---{{ customer_distrbute.get_status_display }}
     </li>
     {% endfor %}
-
 </ul>
-</body>
-</html>
+{% endblock %}

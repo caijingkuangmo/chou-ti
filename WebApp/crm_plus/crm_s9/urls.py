@@ -16,10 +16,12 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 from Xadmin.service.xadmin import site as xadmin_site
+from crm import views
 
-# from stark.service.stark import site
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     # url(r'^stark/', site.urls),
     url(r'^xadmin/', xadmin_site.urls),
+    url(r'^add_permissions/', views.add_permissions),
+    url(r'^login/', views.login),
 ]

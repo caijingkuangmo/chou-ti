@@ -38,8 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'crm.apps.CrmConfig',
-    # "stark.apps.StarkConfig",
-    "Xadmin.apps.XadminConfig"
+    "Xadmin.apps.XadminConfig",
+    "rbac.apps.RbacConfig"
 ]
 
 MIDDLEWARE = [
@@ -50,6 +50,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'rbac.service.rbac.ValidPermission'
 ]
 
 ROOT_URLCONF = 'crm_s9.urls'

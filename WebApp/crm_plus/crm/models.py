@@ -1,17 +1,6 @@
-from django.db import models
-
-# Create your models here.
 
 from django.db import models
-
-# Create your models here.
-
-
-from django.db import models
-
-# Create your models here.
-
-from django.db import models
+from rbac.models import *
 
 class Department(models.Model):
     """
@@ -38,6 +27,8 @@ class UserInfo(models.Model):
     email = models.EmailField(verbose_name='邮箱', max_length=64)
 
     depart = models.ForeignKey(verbose_name='部门', to="Department", on_delete=models.CASCADE, to_field="code")
+    # 绑定权限用户表
+    user = models.OneToOneField(to=User, null=True, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.name

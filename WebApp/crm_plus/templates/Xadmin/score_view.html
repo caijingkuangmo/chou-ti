@@ -1,14 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="/static/bootstrap/css/bootstrap.css">
-    <script src="/static/js/jquery-1.12.4.min.js"></script>
-    <script src="/static/chart/highcharts.js"></script>
-</head>
-<body>
+{% extends 'base.html' %}
+{% block con %}
 <h4>查看 {{ student }} 成绩</h4>
 
 <div class="container">
@@ -48,7 +39,11 @@
 </div>
 
 <div id="container" style="min-width:400px;height:400px" class="col-md-offset-1"></div>
+{% endblock %}
 
+
+{% block sub-js %}
+<script src="/static/chart/highcharts.js"></script>
 <script>
     $(".check_chart").click(function() {
         $.ajax({
@@ -105,5 +100,4 @@
 
 
 </script>
-</body>
-</html>
+{% endblock %}
