@@ -1,5 +1,5 @@
 const state = {
-    count:6,
+    count: 6
 }
 
 var getters = {
@@ -8,17 +8,18 @@ var getters = {
     }
 }
 
+const mutations = {
+    increment(state) {
+        state.count++;
+    }
+}
+
 const actions = {
     increment({ commit, state }) {
-
+        commit("increment");
     }
 }
 
-const mutations = {
-    increment(state){
-
-    }
-}
 
 export default {
     state,
@@ -26,4 +27,3 @@ export default {
     actions,
     mutations
 }
-

@@ -15,9 +15,18 @@ Including another URLconf
 """
 from django.conf.urls import url
 from django.contrib import admin
+from Xadmin.service.xadmin import site
 from app01 import views
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
+    url(r'^xadmin/', site.urls),
     url(r'^test/', views.test),
 ]
+
+
+
+
+
+
+
