@@ -10,7 +10,15 @@ module.exports = {
         // Paths
         assetsSubDirectory: 'static',
         assetsPublicPath: '/',
-        proxyTable: {},
+        proxyTable: {
+            '/django-api': {
+                target: "http://localhost:8889",
+                changeOrigin: true,
+                pathRewrite: {
+                    '^/django-api': "/"
+                }
+            }
+        },
 
         // Various Dev Server settings
         host: 'localhost', // can be overwritten by process.env.HOST
