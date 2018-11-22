@@ -37,8 +37,8 @@
       <file leaf-file-name="Xadmin.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app01/Xadmin.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-181">
-              <caret line="10" column="32" lean-forward="true" selection-start-line="10" selection-start-column="32" selection-end-line="10" selection-end-column="32" />
+            <state relative-caret-position="332">
+              <caret line="29" lean-forward="true" selection-start-line="29" selection-end-line="29" />
               <folding>
                 <element signature="e#70#121#0" expanded="true" />
               </folding>
@@ -101,8 +101,8 @@
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="1">
-    <option name="x" value="184" />
-    <option name="y" value="275" />
+    <option name="x" value="292" />
+    <option name="y" value="236" />
     <option name="width" value="1680" />
     <option name="height" value="1066" />
   </component>
@@ -188,7 +188,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="184" y="275" width="1680" height="1066" extended-state="0" />
+    <frame x="184" y="275" width="1680" height="1066" extended-state="1" />
     <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.14975551" />
@@ -288,8 +288,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app01/Xadmin.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-181">
-          <caret line="10" column="32" lean-forward="true" selection-start-line="10" selection-start-column="32" selection-end-line="10" selection-end-column="32" />
+        <state relative-caret-position="332">
+          <caret line="29" lean-forward="true" selection-start-line="29" selection-end-line="29" />
           <folding>
             <element signature="e#70#121#0" expanded="true" />
           </folding>
