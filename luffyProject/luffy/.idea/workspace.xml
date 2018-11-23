@@ -11,7 +11,7 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="views.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="views.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app01/views.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="240">
@@ -22,6 +22,13 @@
                 <element signature="e#1129#1665#0" />
               </folding>
             </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="models.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/app01/models.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-729" />
           </provider>
         </entry>
       </file>
@@ -67,9 +74,9 @@
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="1">
-    <option name="x" value="-157" />
-    <option name="y" value="257" />
+  <component name="ProjectFrameBounds">
+    <option name="x" value="193" />
+    <option name="y" value="286" />
     <option name="width" value="1680" />
     <option name="height" value="1064" />
   </component>
@@ -128,7 +135,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-157" y="257" width="1680" height="1064" extended-state="1" />
+    <frame x="193" y="286" width="1680" height="1064" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.10757946" />
@@ -194,6 +201,11 @@
             <element signature="e#1129#1665#0" />
           </folding>
         </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app01/models.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-729" />
       </provider>
     </entry>
   </component>

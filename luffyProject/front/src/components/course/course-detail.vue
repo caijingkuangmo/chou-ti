@@ -20,7 +20,7 @@ export default {
           course:"",
           slogon:"",
           why:"",
-          recommend_courses:[]
+          recommend_courses:[],
       }
     };
   },
