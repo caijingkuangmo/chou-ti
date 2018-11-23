@@ -38,10 +38,17 @@ class LoginView(APIView):
         if user:
             random_str = get_random_str2()
             token = models.UserToken.objects.update_or_create(user=user, defaults={'token':random_str})
-            res['token'] = random_str
+            res["token"] = random_str
         else:
-            res['state_code'] = 1001
-            res['msg'] = "用户名或密码错误"
+            res["state_code"] = 1001
+            res["msg"] = "用户名或密码错误"
 
         import json
-        return Response(json.dumps(res, ensure_ascii=False))
+        # return Response(json.dumps(res, ensure_ascii=False))
+        return Response(res)
+
+
+class LogoutView(APIView):
+    authentication_classes = []
+    def post(self, *args, **kwargs):
+        return Response("ok")

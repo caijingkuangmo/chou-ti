@@ -10,6 +10,7 @@
       <div class="login">
         <el-button @click="login">登录</el-button>
         <el-button>注册</el-button>
+        <el-button @click="logout">注销</el-button>
       </div>
     </div>
 </template>
@@ -23,6 +24,10 @@ export default {
   methods: {
     login() {
       this.$router.push({ name: "login" });
+    },
+    logout() {
+      this.$store.dispatch('account/logout');
+      this.$router.push({ name : "home"});
     }
   }
 };
