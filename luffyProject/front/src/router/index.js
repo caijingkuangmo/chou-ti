@@ -13,25 +13,21 @@ const router = new Router({
     routes: [{
             path: '/',
             name: 'home',
-            meta: { requiresAuth: false, },
             component: HomeComponent
         },
         {
             path: '/login',
             name: 'login',
-            meta: { requiresAuth: false, },
             component: LoginComponent
         },
         {
             path: '/home',
             name: 'home',
-            meta: { requiresAuth: false, },
             component: HomeComponent
         },
         {
             path: '/course',
             name: 'course',
-            meta: { requiresAuth: false, },
             component: CourseComponent
         },
         {
