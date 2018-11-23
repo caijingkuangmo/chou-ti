@@ -16,6 +16,7 @@ from app01.utils.account import get_random_str2
 
 
 class CourseView(ViewSetMixin, APIView):
+    authentication_classes = []
     def list(self, request, *args, **kwargs):
         '''
         课程列表接口

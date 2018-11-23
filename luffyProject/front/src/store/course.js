@@ -1,5 +1,8 @@
+import axios from "axios";
+import config from "@/config/config.js"
+
 const state = {
-    count: 6
+    courseList: []
 }
 
 var getters = {
@@ -9,14 +12,39 @@ var getters = {
 }
 
 const mutations = {
-    increment(state) {
-        state.count++;
+    getAllCourse(state, data) {
+        state.courseList = data;
     }
 }
 
 const actions = {
-    increment({ commit, state }) {
-        commit("increment");
+    async getAllCourse({ commit, state }) {
+        try {
+            const resp = await axios.get(config.baseUrl + '/course/')
+            commit("getAllCourse", resp.data.data);
+        } catch (e) {
+            console.log(e);
+            commit('getAllCourse', [])
+        }
+
+    },
+    async getCourseDetail({ commit, state }, courseId) {
+        try {
+            const resp = await axios.get(config.baseUrl + `/course/${courseId}/`);
+            return resp.data.data;
+        } catch (e) {
+            console.log(e);
+            return {};
+        }
+    },
+    async getChapters({ commit, state }, courseId) {
+        try {
+            const resp = await axios.get(config.baseUrl + `/course/${courseId}/`);
+            return resp.data.data;
+        } catch (e) {
+            console.log(e);
+            return [];
+        }
     }
 }
 
