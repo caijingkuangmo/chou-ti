@@ -62,7 +62,7 @@ router.beforeEach((to, from, next) => {
     if (to.meta.requiresAuth === false) {
         next()
     } else {
-        if (mainStore.state.account.isLogin === true) {
+        if (String(mainStore.state.account.isLogin) === 'true') {
             next()
         } else {
             next({
