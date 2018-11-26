@@ -1,12 +1,14 @@
-from django.shortcuts import render, HttpResponse
-
-from rest_framework.views import APIView
-from rest_framework.viewsets import ViewSetMixin
-from rest_framework.response import Response
+# -*- coding:utf-8 -*-
+#! /usr/bin/env python
+# __author__ = 'seven'
 
 from app01 import models
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from rest_framework.viewsets import ViewSetMixin
+
 from app01 import serializer
-from app01.utils.account import get_random_str2
+
 
 # class CourseView(APIView):
 #     def get(self, request, *args, **kwargs):
@@ -68,29 +70,3 @@ class ChapterView(APIView):
         chapters = models.CourseChapter.objects.all()
         chas = serializer.ChapterSerializers(chapters, many=True)
         return Response(chas.data)
-
-
-class LoginView(APIView):
-    authentication_classes = []
-    def post(self, request, *args, **kwargs):
-        name = request.data.get('name')
-        pwd = request.data.get('pwd')
-        user = models.Account.objects.filter(username=name, password=pwd).first()
-        res = {"state_code":1000, "msg":None}
-        if user:
-            random_str = get_random_str2()
-            token = models.UserAuthToken.objects.update_or_create(user=user, defaults={'token':random_str})
-            res["token"] = random_str
-        else:
-            res["state_code"] = 1001
-            res["msg"] = "用户名或密码错误"
-
-        import json
-        # return Response(json.dumps(res, ensure_ascii=False))
-        return Response(res)
-
-
-class LogoutView(APIView):
-    authentication_classes = []
-    def post(self, *args, **kwargs):
-        return Response("ok")

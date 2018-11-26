@@ -2,6 +2,7 @@ from rest_framework import serializers
 
 from app01 import models
 
+########################课程相关#############################
 class CourseSerializers(serializers.ModelSerializer):
 
     class Meta:
@@ -25,6 +26,14 @@ class CourseDetailSerializers(serializers.ModelSerializer):
         temp = []
         for c in obj.recommend_courses.all():
             temp.append(c.name)
+        return temp
+
+    teachers = serializers.SerializerMethodField()
+
+    def get_teachers(self, obj):
+        temp = []
+        for teacher in obj.teachers.all():
+            temp.append(teacher.name)
         return temp
 
 
