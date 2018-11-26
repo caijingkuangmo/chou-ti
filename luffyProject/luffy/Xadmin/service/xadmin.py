@@ -96,13 +96,14 @@ class ModelXadmin:
             from django.forms.models import ModelChoiceField
             from django.forms.models import ModelMultipleChoiceField
             if isinstance(bfield.field, ModelChoiceField):
-                bfield.is_pop = True
                 #获取form field字段 对应模型表 bfield.field.queryset.model
                 related_model_name = bfield.field.queryset.model._meta.model_name
                 related_app_label = bfield.field.queryset.model._meta.app_label
-                _url = reverse("%s_%s_add"%(related_app_label, related_model_name))
-                #pop_res_id主要用于  在pop添加数据后，在添加页面确定哪个响应项
-                bfield.url = _url + "?pop_res_id=id_%s"%bfield.name
+                if related_model_name != "contenttype":  #排除contenttype类型
+                    bfield.is_pop = True
+                    _url = reverse("%s_%s_add"%(related_app_label, related_model_name))
+                    #pop_res_id主要用于  在pop添加数据后，在添加页面确定哪个响应项
+                    bfield.url = _url + "?pop_res_id=id_%s"%bfield.name
 
 
 
@@ -376,7 +377,7 @@ class ShowList(object):
 #定义注册类
 class XadminSite(object):
     def __init__(self):
-        self._registry={}
+        self._registry = {}
 
     def register(self, model, xadmin_class=None):
         if not xadmin_class:

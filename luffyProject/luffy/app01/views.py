@@ -65,7 +65,7 @@ class CourseDetailView(APIView):
 
 class ChapterView(APIView):
     def get(self, request, *args, **kwargs):
-        chapters = models.Chapter.objects.all()
+        chapters = models.CourseChapter.objects.all()
         chas = serializer.ChapterSerializers(chapters, many=True)
         return Response(chas.data)
 
@@ -75,11 +75,11 @@ class LoginView(APIView):
     def post(self, request, *args, **kwargs):
         name = request.data.get('name')
         pwd = request.data.get('pwd')
-        user = models.UserInfo.objects.filter(user=name, pwd=pwd).first()
+        user = models.Account.objects.filter(username=name, password=pwd).first()
         res = {"state_code":1000, "msg":None}
         if user:
             random_str = get_random_str2()
-            token = models.UserToken.objects.update_or_create(user=user, defaults={'token':random_str})
+            token = models.UserAuthToken.objects.update_or_create(user=user, defaults={'token':random_str})
             res["token"] = random_str
         else:
             res["state_code"] = 1001

@@ -61,3 +61,6 @@ crm功能：
     app下新建Xadmin.py
         from Xadmin.service.xadmin import site
         site.register进行注册表
+
+遗留问题:
+    add添加失败，pop +号消失

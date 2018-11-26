@@ -6,26 +6,48 @@ from Xadmin.service.xadmin import site, ModelXadmin
 from app01 import models
 
 
-site.register(models.UserInfo)
+site.register(models.CourseCategory)
+site.register(models.CourseSubCategory)
+site.register(models.Account)
 
 class CourseConfig(ModelXadmin):
-    list_display = ['title', 'level']
+    list_display = ['name', 'sub_category', 'course_type', 'degree_course', 'level']
 site.register(models.Course, CourseConfig)
 
+class DegreeCourseConfig(ModelXadmin):
+    list_display = ['name', 'brief', 'total_scholarship', 'mentor_compensation_bonus', 'prerequisite', 'teachers']
+site.register(models.DegreeCourse, DegreeCourseConfig)
+
+class TeacherConfig(ModelXadmin):
+    list_display = ['name', 'role', 'title', 'brief']
+site.register(models.Teacher, TeacherConfig)
 
 class CourseDetailConfig(ModelXadmin):
-    list_display = ['course', 'slogon', 'why', 'recommend_courses']
-
+    list_display = ['course', 'hours', 'course_slogan', 'why_study', 'recommend_courses', 'teachers']
 site.register(models.CourseDetail, CourseDetailConfig)
 
 
-class ChapterConfig(ModelXadmin):
-    list_display = ['num', 'name', 'course']
+class CourseChapterConfig(ModelXadmin):
+    list_display = ['chapter', 'name', 'course']
+site.register(models.CourseChapter, CourseChapterConfig)
 
-site.register(models.Chapter, ChapterConfig)
 
-
-class UserTokenConfig(ModelXadmin):
+class UserAuthTokenConfig(ModelXadmin):
     list_display = ['user', 'token']
+site.register(models.UserAuthToken, UserAuthTokenConfig)
 
-site.register(models.UserToken, UserTokenConfig)
+
+site.register(models.ArticleSource)
+
+class ArticleConfig(ModelXadmin):
+    list_display = ['title', 'source', 'article_type', 'brief', 'vid', 'comment_num', 'agree_num', 'view_num', 'collect_num']
+site.register(models.Article, ArticleConfig)
+
+
+class CollectionConfig(ModelXadmin):
+    list_display = ['content_type', 'object_id', 'account']
+site.register(models.Collection, CollectionConfig)
+
+class CommentConfig(ModelXadmin):
+    list_display = ['content_type', 'object_id', 'p_node', 'content', 'account', 'disagree_number', 'agree_number']
+site.register(models.Comment, CommentConfig)

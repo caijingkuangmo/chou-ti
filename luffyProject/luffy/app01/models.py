@@ -17,7 +17,7 @@ class CourseCategory(models.Model):
 
 class CourseSubCategory(models.Model):
     '''课程子类 e.g python linux'''
-    category = models.ForeignKey("CourseCategory")
+    category = models.ForeignKey("CourseCategory", on_delete=models.CASCADE)
     name = models.CharField(max_length=64, unique=True)
 
     def __str__(self):
@@ -72,7 +72,7 @@ class Teacher(models.Model):
 
 class Scholarship(models.Model):
     """学位课程奖学金"""
-    degree_course = models.ForeignKey("DegreeCourse")
+    degree_course = models.ForeignKey("DegreeCourse", on_delete=models.CASCADE)
     time_percent = models.PositiveSmallIntegerField(verbose_name="奖励档位(时间百分比)", help_text="只填百分值，如80,代表80%")
     value = models.PositiveIntegerField(verbose_name="奖学金数额")
 
@@ -88,12 +88,12 @@ class Course(models.Model):
     name = models.CharField(max_length=128, unique=True) # Python基础
     course_img = models.CharField(max_length=255)
 
-    sub_category = models.ForeignKey("CourseSubCategory") #python
+    sub_category = models.ForeignKey("CourseSubCategory", on_delete=models.CASCADE) #python
 
     course_type_choices = ((0, '付费'), (1, 'VIP专享'), (2, '学位课程'))
     course_type = models.SmallIntegerField(choices=course_type_choices)
 
-    degree_course = models.ForeignKey("DegreeCourse", blank=True, null=True, help_text="若是学位课程，此处关联学位表")
+    degree_course = models.ForeignKey("DegreeCourse", blank=True, null=True, help_text="若是学位课程，此处关联学位表", on_delete=models.CASCADE)
 
 
     brief = models.TextField(verbose_name="课程（模块）概述", max_length=2048)
@@ -125,7 +125,7 @@ class Course(models.Model):
 
 class CourseDetail(models.Model):
     """课程详情页内容"""
-    course = models.OneToOneField("Course")
+    course = models.OneToOneField("Course", on_delete=models.CASCADE)
     hours = models.IntegerField("课时")
     course_slogan = models.CharField(verbose_name="口号", max_length=125, blank=True, null=True)
     video_brief_link = models.CharField(verbose_name='课程介绍', max_length=255, blank=True, null=True)
@@ -145,7 +145,7 @@ class CourseDetail(models.Model):
 
 class OftenAskedQuestion(models.Model):
     """常见问题"""
-    content_type = models.ForeignKey(ContentType)  # 关联course or degree_course
+    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)  # 关联course or degree_course
     object_id = models.PositiveIntegerField()
     content_object = GenericForeignKey('content_type', 'object_id')
 
@@ -162,7 +162,7 @@ class OftenAskedQuestion(models.Model):
 
 class CourseOutline(models.Model):
     """课程大纲"""
-    course_detail = models.ForeignKey("CourseDetail")
+    course_detail = models.ForeignKey("CourseDetail", on_delete=models.CASCADE)
 
     # 前端显示顺序
     order = models.PositiveSmallIntegerField(default=1)
@@ -180,7 +180,7 @@ class CourseOutline(models.Model):
 
 class CourseChapter(models.Model):
     """课程章节"""
-    course = models.ForeignKey("Course", related_name='coursechapters')
+    course = models.ForeignKey("Course", related_name='coursechapters', on_delete=models.CASCADE)
     chapter = models.SmallIntegerField(verbose_name="第几章", default=1)
     name = models.CharField(max_length=128)
     summary = models.TextField(verbose_name="章节介绍", blank=True, null=True)
@@ -196,7 +196,7 @@ class CourseChapter(models.Model):
 
 class CourseSection(models.Model):
     """课时目录"""
-    chapter = models.ForeignKey("CourseChapter", related_name='coursesections')
+    chapter = models.ForeignKey("CourseChapter", related_name='coursesections', on_delete=models.CASCADE)
     name = models.CharField(max_length=128)
     order = models.PositiveSmallIntegerField(verbose_name="课时排序", help_text="建议每个课时之间空1至2个值，以备后续插入课时")
     section_type_choices = ((0, '文档'), (1, '练习'), (2, '视频'))
@@ -218,7 +218,7 @@ class CourseSection(models.Model):
 
 
 class Homework(models.Model):
-    chapter = models.ForeignKey("CourseChapter")
+    chapter = models.ForeignKey("CourseChapter", on_delete=models.CASCADE)
     title = models.CharField(max_length=128, verbose_name="作业题目")
     order = models.PositiveSmallIntegerField("作业顺序", help_text="同一课程的每个作业之前的order值间隔1-2个数")
     homework_type_choices = ((0, '作业'), (1, '模块通关考核'))
@@ -240,7 +240,7 @@ class Homework(models.Model):
 
 class PricePolicy(models.Model):
     """价格与有课程效期表"""
-    content_type = models.ForeignKey(ContentType)  # 关联course or degree_course
+    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)  # 关联course or degree_course
     object_id = models.PositiveIntegerField()
     content_object = GenericForeignKey('content_type', 'object_id')
 
@@ -276,7 +276,7 @@ class ArticleSource(models.Model):
 class Article(models.Model):
     """文章资讯"""
     title = models.CharField(max_length=255, unique=True, db_index=True, verbose_name="标题")
-    source = models.ForeignKey("ArticleSource", verbose_name="来源")
+    source = models.ForeignKey("ArticleSource", verbose_name="来源", on_delete=models.CASCADE)
     article_type_choices = ((0, '资讯'), (1, '视频'))
     article_type = models.SmallIntegerField(choices=article_type_choices, default=0)
     brief = models.TextField(max_length=512, verbose_name="摘要")
@@ -310,11 +310,11 @@ class Article(models.Model):
 
 class Collection(models.Model):
     """收藏"""
-    content_type = models.ForeignKey(ContentType)
+    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
     object_id = models.PositiveIntegerField()
     content_object = GenericForeignKey('content_type', 'object_id')
 
-    account = models.ForeignKey("Account")
+    account = models.ForeignKey("Account", on_delete=models.CASCADE)
     date = models.DateTimeField(auto_now_add=True)
 
     class Meta:
@@ -323,13 +323,13 @@ class Collection(models.Model):
 
 class Comment(models.Model):
     """通用的评论表"""
-    content_type = models.ForeignKey(ContentType, blank=True, null=True, verbose_name="类型")
+    content_type = models.ForeignKey(ContentType, blank=True, null=True, verbose_name="类型", on_delete=models.CASCADE)
     object_id = models.PositiveIntegerField(blank=True, null=True)
     content_object = GenericForeignKey('content_type', 'object_id')
 
-    p_node = models.ForeignKey("self", blank=True, null=True, verbose_name="父级评论")
+    p_node = models.ForeignKey("self", blank=True, null=True, verbose_name="父级评论", on_delete=models.CASCADE)
     content = models.TextField(max_length=1024)
-    account = models.ForeignKey("Account", verbose_name="会员名")
+    account = models.ForeignKey("Account", verbose_name="会员名", on_delete=models.CASCADE)
     disagree_number = models.IntegerField(default=0, verbose_name="踩")
     agree_number = models.IntegerField(default=0, verbose_name="赞同数")
     date = models.DateTimeField(auto_now_add=True)
@@ -353,7 +353,7 @@ class UserAuthToken(models.Model):
     """
     用户Token表
     """
-    user = models.OneToOneField(to="Account")
+    user = models.OneToOneField(to="Account", on_delete=models.CASCADE)
     token = models.CharField(max_length=64, unique=True)
 
     def __str__(self):
