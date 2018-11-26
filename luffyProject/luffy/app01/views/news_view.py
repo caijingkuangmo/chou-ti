@@ -45,10 +45,9 @@ class CollectionView(ViewSetMixin, APIView):
     def create(self, request, *args, **kwargs):
         '''
         {
-        "account": "alex",
-        "content_type": "article",
-        "object_id": 1,
-        # "date": "2018-11-26T03:53:30.947000Z"
+            "account": "alex",
+            "content_type": "article",
+            "object_id": 1,
         }
         :param request:
         :param args:
@@ -76,7 +75,26 @@ class CommentView(ViewSetMixin, APIView):
         return Response(c.data)
 
     def create(self, request, *args, **kwargs):
+        '''
+        {
+            "account": "seven",
+            "content": "好像就这样混吃等死3",
+            "p_node": 3
+        }
+        or
+        {
+            "account": "seven",
+            "content_type": "article",
+            "object_id": 1,
+            "content": "好像就这样混吃等死4"
+        }
+        :param request:
+        :param args:
+        :param kwargs:
+        :return:
+        '''
         cs = serializer.CommentSerializers(data=request.data, many=False)
+        print(cs)
         if cs.is_valid():
             cs.save()
             return Response(cs.data)

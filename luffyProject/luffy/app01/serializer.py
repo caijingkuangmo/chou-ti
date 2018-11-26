@@ -76,17 +76,16 @@ class CommentSerializers(serializers.ModelSerializer):
         fields = "__all__"
 
     account = serializers.CharField(source="account.username")
-    # content_type = serializers.CharField(source="content_type.app_label")
-    # content_type = serializers.CharField(source="content_type.name")
-    content_type = serializers.SerializerMethodField()  #这个只是显示用？
-    def get_content_type(self, obj):
-        return obj.content_type.name if obj.content_type else None
+    # content_type = serializers.CharField(source="content_type.model", allow_null=True)
+    content_type = serializers.CharField(source="content_type.model", default=None)
+    # content_type = serializers.SerializerMethodField()  #这个只是显示用？
+    # def get_content_type(self, obj):
+    #     return obj.content_type.model if obj.content_type else None
 
     def create(self, validated_data):
-        # model_dic = validated_data.pop("content_type")
-        # validated_data['content_type'] = ContentType.objects.filter(**model_dic).first()
-        # comment_dic = validated_data.pop("p_node")
-        # validated_data['p_node'] = models.Comment.objects.filter(**comment_dic).first()
+        print("validated_data", validated_data)
+        model_dic = validated_data.pop("content_type")
+        validated_data['content_type'] = ContentType.objects.filter(**model_dic).first()
         account_dic = validated_data.pop("account")
         validated_data['account'] = models.Account.objects.filter(**account_dic).first()
         obj = models.Comment.objects.create(**validated_data)

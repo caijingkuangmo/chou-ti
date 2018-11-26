@@ -11,6 +11,7 @@ from app01.utils.account import get_random_str2
 class LoginView(APIView):
     authentication_classes = []
     def post(self, request, *args, **kwargs):
+        print(request.data)
         username = request.data.get('username')
         password = request.data.get('password')
         user = models.Account.objects.filter(username=username, password=password).first()
