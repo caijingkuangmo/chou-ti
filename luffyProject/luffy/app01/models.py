@@ -300,7 +300,8 @@ class Article(models.Model):
     position = models.SmallIntegerField(choices=position_choices, default=0, verbose_name="位置")
 
 
-    #comment = GenericRelation("Comment")
+    comment = GenericRelation("Comment")
+    collection = GenericRelation("Collection")
 
     class Meta:
         verbose_name_plural = "文章"

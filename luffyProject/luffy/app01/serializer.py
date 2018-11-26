@@ -43,3 +43,52 @@ class ChapterSerializers(serializers.ModelSerializer):
         fields = '__all__'
 
     course = serializers.CharField(source='course.name')
+
+
+#######################深科技相关##############################
+class ArticleSourceSerializers(serializers.ModelSerializer):
+    class Meta:
+        model = models.ArticleSource
+        fields = "__all__"
+
+class ArticleSerializers(serializers.ModelSerializer):
+    class Meta:
+        model = models.Article
+        fields = "__all__"
+
+    source = serializers.CharField(source='source.name')
+    article_type = serializers.SerializerMethodField()
+    def get_article_type(self, obj):
+        return obj.get_article_type_display()
+
+    status = serializers.SerializerMethodField()
+    def get_status(self, obj):
+        return obj.get_status_display()
+
+    position = serializers.SerializerMethodField()
+    def get_position(self, obj):
+        return obj.get_position_display()
+
+
+class CommentSerializers(serializers.ModelSerializer):
+    class Meta:
+        model = models.Comment
+        fields = "__all__"
+
+    account = serializers.CharField(source="account.username")
+    # content_type = serializers.CharField(source="content_type.app_label")
+    # content_type = serializers.CharField(source="content_type.name")
+    content_type = serializers.SerializerMethodField()
+    def get_content_type(self, obj):
+        return obj.content_type.name if obj.content_type else None
+
+class CollectionSerializers(serializers.ModelSerializer):
+    class Meta:
+        model = models.Collection
+        fields = "__all__"
+
+    account = serializers.CharField(source="account.username")
+    # content_type = serializers.CharField(source="content_type.app_label")
+    content_type = serializers.CharField(source="content_type.name")
+
+

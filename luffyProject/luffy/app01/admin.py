@@ -2,6 +2,9 @@ from django.contrib import admin
 
 # Register your models here.
 from app01 import models
+from django.contrib.contenttypes.models import ContentType
+
+admin.site.register(ContentType)
 
 
 # site.register(models.Account)

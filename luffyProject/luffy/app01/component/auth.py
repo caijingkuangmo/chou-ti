@@ -6,8 +6,7 @@ class Authentication(BaseAuthentication):
     def authenticate(self, request):
         # token = request.GET.get('token')
         token = request.query_params.get('token')
-        print('token', token)
-        token_obj = models.UserToken.objects.filter(token=token).first()
+        token_obj = models.UserAuthToken.objects.filter(token=token).first()
         if not token_obj:
             raise exceptions.AuthenticationFailed('登录认证失败')
         else:
