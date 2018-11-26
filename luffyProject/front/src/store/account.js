@@ -48,14 +48,14 @@ const actions = {
     try {
       const resp = await axios.post(config.prefix + '/login/', loginForm);
       if (resp.data.state_code == 1000) {
-        console.log('enter')
+        console.log('enter');
         commit('login', {
           token: resp.data.token,
-          username: loginForm.name,
+          username: loginForm.username,
           isLogin: true
         });
       } else {
-        commit('login', {})
+        commit('login', {});
       }
       return resp.data
     } catch (e) {

@@ -1,11 +1,11 @@
 <template>
     <div>
         <el-form :model="loginForm" :rules="loginRules">
-            <el-form-item label="用户名" prop="name">
-                <el-input v-model="loginForm.name"></el-input>
+            <el-form-item label="用户名" prop="username">
+                <el-input v-model="loginForm.username"></el-input>
             </el-form-item>
-            <el-form-item label="密码" prop="pwd">
-                <el-input v-model="loginForm.pwd"></el-input>
+            <el-form-item label="密码" prop="password">
+                <el-input v-model="loginForm.password" type="password"></el-input>
             </el-form-item>
             <el-form-item>
                 <el-button type="primary" @click="login">登录</el-button>
@@ -20,14 +20,14 @@ export default {
   data() {
     return {
       loginForm: {
-        name: "",
-        pwd: ""
+        username: "",
+        password: ""
       },
       loginRules:{
-          name:[
+          username:[
               {required:true, message:"请输入用户名", trigger:'blur'}
           ],
-          pwd:[
+          password:[
               {required:true, message:"请输入密码", trigger:'blur'}
           ]
       }
@@ -37,7 +37,7 @@ export default {
       async login(){
         const result = await this.$store.dispatch('account/login', this.loginForm); 
         if(result.state_code != 1000) {
-            this.$message.error(result.message);
+            this.$message.error(result.msg);
         } else {
             let redirect = this.$route.query.redirect ? this.$route.query.redirect : "/";
             this.$router.push(redirect);

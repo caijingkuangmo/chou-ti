@@ -7,7 +7,7 @@
                 </el-table-column>
                 <el-table-column prop="level" label="级别" width="180">
                 </el-table-column>
-                <el-table-column prop="title" label="名称" width="180">
+                <el-table-column prop="name" label="名称" width="180">
                 </el-table-column>
                 <el-table-column prop="course_img" label="图片链接" width="180">
                 </el-table-column>
