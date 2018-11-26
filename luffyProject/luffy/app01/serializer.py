@@ -1,5 +1,5 @@
 from rest_framework import serializers
-
+from django.contrib.contenttypes.models import ContentType
 from app01 import models
 
 ########################课程相关#############################
@@ -78,9 +78,19 @@ class CommentSerializers(serializers.ModelSerializer):
     account = serializers.CharField(source="account.username")
     # content_type = serializers.CharField(source="content_type.app_label")
     # content_type = serializers.CharField(source="content_type.name")
-    content_type = serializers.SerializerMethodField()
+    content_type = serializers.SerializerMethodField()  #这个只是显示用？
     def get_content_type(self, obj):
         return obj.content_type.name if obj.content_type else None
+
+    def create(self, validated_data):
+        # model_dic = validated_data.pop("content_type")
+        # validated_data['content_type'] = ContentType.objects.filter(**model_dic).first()
+        # comment_dic = validated_data.pop("p_node")
+        # validated_data['p_node'] = models.Comment.objects.filter(**comment_dic).first()
+        account_dic = validated_data.pop("account")
+        validated_data['account'] = models.Account.objects.filter(**account_dic).first()
+        obj = models.Comment.objects.create(**validated_data)
+        return obj
 
 class CollectionSerializers(serializers.ModelSerializer):
     class Meta:
@@ -89,6 +99,17 @@ class CollectionSerializers(serializers.ModelSerializer):
 
     account = serializers.CharField(source="account.username")
     # content_type = serializers.CharField(source="content_type.app_label")
-    content_type = serializers.CharField(source="content_type.name")
+    content_type = serializers.CharField(source="content_type.model")
+
+    def create(self, validated_data):
+        model_dic = validated_data.pop("content_type")
+        validated_data['content_type'] = ContentType.objects.filter(**model_dic).first()
+        account_dic = validated_data.pop("account")
+        validated_data['account'] = models.Account.objects.filter(**account_dic).first()
+        obj = models.Collection.objects.create(**validated_data)
+        return obj
+
+
+
 
 

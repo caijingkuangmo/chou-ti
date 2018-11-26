@@ -42,6 +42,26 @@ class CollectionView(ViewSetMixin, APIView):
         collection = serializer.CollectionSerializers(instance=collection_obj, many=False)
         return Response(collection.data)
 
+    def create(self, request, *args, **kwargs):
+        '''
+        {
+        "account": "alex",
+        "content_type": "article",
+        "object_id": 1,
+        # "date": "2018-11-26T03:53:30.947000Z"
+        }
+        :param request:
+        :param args:
+        :param kwargs:
+        :return:
+        '''
+        cs = serializer.CollectionSerializers(data=request.data, many=False)
+        if cs.is_valid():
+            cs.save()
+            return Response(cs.data)
+        else:
+            return Response(cs.errors)
+
 class CommentView(ViewSetMixin, APIView):
     authentication_classes = []
     def list(self, request, *args, **kwargs):
@@ -54,3 +74,11 @@ class CommentView(ViewSetMixin, APIView):
         comment = models.Comment.objects.filter(id=pk).first()
         c = serializer.CommentSerializers(instance=comment, many=False)
         return Response(c.data)
+
+    def create(self, request, *args, **kwargs):
+        cs = serializer.CommentSerializers(data=request.data, many=False)
+        if cs.is_valid():
+            cs.save()
+            return Response(cs.data)
+        else:
+            return Response(cs.errors)

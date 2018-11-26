@@ -8,7 +8,10 @@ from app01 import models
 
 site.register(models.CourseCategory)
 site.register(models.CourseSubCategory)
-site.register(models.Account)
+
+class AccountConfig(ModelXadmin):
+    list_display = ['id', 'username']
+site.register(models.Account, AccountConfig)
 
 class CourseConfig(ModelXadmin):
     list_display = ['name', 'sub_category', 'course_type', 'degree_course', 'level']

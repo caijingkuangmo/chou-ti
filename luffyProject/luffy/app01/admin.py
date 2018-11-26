@@ -4,7 +4,9 @@ from django.contrib import admin
 from app01 import models
 from django.contrib.contenttypes.models import ContentType
 
-admin.site.register(ContentType)
+class ContentTypeConfig(admin.ModelAdmin):
+    list_display = ['id', 'name']
+admin.site.register(ContentType, ContentTypeConfig)
 
 
 # site.register(models.Account)
