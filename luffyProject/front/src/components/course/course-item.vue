@@ -1,18 +1,18 @@
 <template>
-  <div class="course-item" style="margin-top:20px;">
-        <el-card :body-style="{ padding: '0px' }">
-          <div style="position:relative">
-            <img :src="`${config.prefix}${course.course_img}`" class="image">
-            <div class="course-title">{{course.name}}</div>
-          </div>
-          <div style="padding: 20px;">
-            <span class="brief">简介:{{course.brief}}</span>
-            <div class="bottom clearfix" style="margin-top:20px;">
-              <div style="width:50%;display: inline-block;text-align:left;float:left">123人<span style="margin-left:20px">{{course.level}}</span></div>
-              <div style="width:50%;display: inline-block;text-align:right;right:right">免费</div>
-            </div>
-          </div>
-        </el-card>
+  <div class="course-item" style="margin-top:20px;cursor: pointer;" @click="viewCourseDetail(course.id)">
+    <el-card :body-style="{ padding: '0px' }">
+      <div style="position:relative">
+        <img :src="`${config.prefix}${course.course_img}`" class="image">
+        <div class="course-title">{{course.name}}</div>
+      </div>
+      <div style="padding: 20px;">
+        <span class="brief">简介:{{course.brief}}</span>
+        <div class="bottom clearfix" style="margin-top:20px;">
+          <div style="width:50%;display: inline-block;text-align:left;float:left">123人<span style="margin-left:20px">{{course.level}}</span></div>
+          <div style="width:50%;display: inline-block;text-align:right;right:right">免费</div>
+        </div>
+      </div>
+    </el-card>
   </div>
 </template>
 
@@ -35,19 +35,28 @@
         type: Object,
         default: function () {
           return {
-            name:"",
-            course_img:"",
-            brief:"",
-            level:"",
+            name: "",
+            course_img: "",
+            brief: "",
+            level: "",
           };
         }
       }
     },
-    created() {
-    },
+    created() {},
     data() {
       return {
         config,
+      }
+    },
+    methods: {
+      viewCourseDetail(course_id) {
+        this.$router.push({
+          name: 'course-detail',
+          params: {
+            id: course_id
+          }
+        });
       }
     }
   }
@@ -55,19 +64,9 @@
 </script>
 
 <style scoped>
-  .time {
-    font-size: 13px;
-    color: #999;
-  }
-
   .bottom {
     margin-top: 13px;
     line-height: 12px;
-  }
-
-  .button {
-    padding: 0;
-    float: right;
   }
 
   .image {
