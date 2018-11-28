@@ -12,6 +12,22 @@
       <span>评分 : 9.9</span>
     </div>
   </div>
+  <el-tabs v-model="activeTab" @tab-click="handleClick">
+    <el-tab-pane label="课程概述" name="first">
+      <CourseItemOverview></CourseItemOverview>
+    </el-tab-pane>
+    <el-tab-pane label="课程章节" name="second">
+      <CourseItemChapter></CourseItemChapter>
+    </el-tab-pane>
+    <el-tab-pane label="用户评价" name="third">
+      <CourseItemComment></CourseItemComment>
+    </el-tab-pane>
+    <el-tab-pane label="常见问题" name="fourth">
+      <CourseItemQuestion></CourseItemQuestion>
+    </el-tab-pane>
+  </el-tabs>
+
+
   <CcVideo ref="video"></CcVideo>
 </div>
 
@@ -46,15 +62,24 @@
 
   import CcVideo from "@/components/course/cc-video.vue"
   import PlayPng from "@/assets/play.png"
+  import CourseItemOverview from "@/components/course/course-item-overview.vue"
+  import CourseItemChapter from "@/components/course/course-item-chapter.vue"
+  import CourseItemComment from "@/components/course/course-item-comment.vue"
+  import CourseItemQuestion from "@/components/course/course-item-question.vue"
 
   export default {
     name: "course-detail",
     components: {
-      CcVideo
+      CcVideo,
+      CourseItemOverview,
+      CourseItemChapter,
+      CourseItemComment,
+      CourseItemQuestion,
     },
     data() {
       return {
         PlayPng,
+        activeTab:"first",
         courseDetail: {
           course: "",
           slogon: "",
@@ -72,6 +97,10 @@
     methods: {
       showVideo() {
         this.$refs['video'].showDialog();
+      },
+      handleClick(tab, event) {
+        this.activeTab = tab.name;
+        //请求其他 tab的数据
       }
     }
   };
