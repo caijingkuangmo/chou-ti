@@ -1,7 +1,7 @@
 <template>
   <div>
     <Nav></Nav>
-    <CourseFilterTab></CourseFilterTab>
+    <CourseFilterTab :courseList="courseList"></CourseFilterTab>
   </div>
 </template>
 

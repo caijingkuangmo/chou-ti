@@ -1,32 +1,18 @@
 <template>
-  <div class="course-item">
-    <el-row>
-      <el-col :span="8" v-for="(o, index) in 2" :key="o" :offset="index > 0 ? 2 : 0">
-        <!-- <el-card :body-style="{ padding: '0px' }">
-          <img :src="pythonImg" class="image">
-          <div style="padding: 14px;">
-            <span>好吃的汉堡</span>
-            <div class="bottom clearfix">
-              <time class="time">{{ currentDate }}</time>
-              <el-button type="text" class="button">操作按钮</el-button>
-            </div>
-          </div>
-        </el-card> -->
+  <div class="course-item" style="margin-top:20px;">
         <el-card :body-style="{ padding: '0px' }">
           <div style="position:relative">
-            <img :src="pythonImg" class="image">
-            <div class="course-title">Python基础</div>
+            <img :src="`${config.prefix}${course.course_img}`" class="image">
+            <div class="course-title">{{course.name}}</div>
           </div>
           <div style="padding: 20px;">
-            <span class="brief">简介：123sfdaaaaaaaaaaaaaaaaaasdffhdfffffffffffffffffffffffffffffffffffffffffffffffffffffff456</span>
+            <span class="brief">简介:{{course.brief}}</span>
             <div class="bottom clearfix" style="margin-top:20px;">
-              <div style="width:50%;display: inline-block;text-align:center;float:left">123人</div>
-              <div style="width:50%;display: inline-block;text-align:center;right:right">免费</div>
+              <div style="width:50%;display: inline-block;text-align:left;float:left">123人<span style="margin-left:20px">{{course.level}}</span></div>
+              <div style="width:50%;display: inline-block;text-align:right;right:right">免费</div>
             </div>
           </div>
         </el-card>
-      </el-col>
-    </el-row>
   </div>
 </template>
 
@@ -39,7 +25,8 @@
    * 人数：先写死
    * 价格：县写死，这里是一个月价格
    */
-  import pythonImg from "@/assets/python.png"
+  // import pythonImg from "@/assets/python.png"
+  import config from "@/config/config.js"
 
   export default {
     name: "course-item",
@@ -47,16 +34,20 @@
       course: {
         type: Object,
         default: function () {
-          return {};
+          return {
+            name:"",
+            course_img:"",
+            brief:"",
+            level:"",
+          };
         }
       }
     },
     created() {
-      console.log(this.course);
     },
     data() {
       return {
-        pythonImg,
+        config,
       }
     }
   }

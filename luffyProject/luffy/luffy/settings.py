@@ -122,6 +122,8 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+STATICFILES_DIRS = (BASE_DIR, 'static')
+
 REST_FRAMEWORK = {
 "DEFAULT_AUTHENTICATION_CLASSES":["app01.component.auth.Authentication",],
 }

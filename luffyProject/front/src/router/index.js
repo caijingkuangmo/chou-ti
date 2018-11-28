@@ -6,6 +6,7 @@ import CourseComponent from "@/components/course/course.vue"
 import CourseDetailComponent from "@/components/course/course-detail.vue"
 import MicroComponent from "@/components/micro/micro.vue"
 import NewsComponent from "@/components/news/news.vue"
+import TestComponent from "@/components/test.vue"
 
 import mainStore from "@/store/index.js"
 
@@ -23,6 +24,12 @@ const router = new Router({
             name: 'login',
             meta: { requiresAuth: false, },
             component: LoginComponent
+        },
+        {
+            path: '/test',
+            name: 'test',
+            meta: { requiresAuth: false, },
+            component: TestComponent
         },
         {
             path: '/home',

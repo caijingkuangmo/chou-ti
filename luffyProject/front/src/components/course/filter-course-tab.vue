@@ -2,9 +2,9 @@
   <div class="filter-course-area">
     <el-tabs v-model="activeName" @tab-click="handleClick">
       <el-tab-pane v-for="(item, index) in config.courseFilterList" :key="index" :label="item.label" :name="item.name">
-        <div>
-          <CourseItem v-for="(course, index) in courseList" :key="index" :course="course"></CourseItem>
-        </div>
+        <el-col :span="6" v-for="(course, index) in courseList" :key="index" :offset="index % 3 != 0 ? 3 : 0">
+          <CourseItem :course="course"></CourseItem>
+        </el-col> 
       </el-tab-pane>
     </el-tabs>
   </div>
@@ -15,11 +15,17 @@
   import CourseItem from "@/components/course/course-item.vue";
   export default {
     name: "filter-course-tab",
-    props: [],
+    props: {
+      courseList:{
+        type: Array,
+        default: function () {
+          return [];
+        }
+      }
+    },
     data() {
       return {
         activeName: "all",
-        courseList: [{name:'123'}],
         config,
       }
     },
