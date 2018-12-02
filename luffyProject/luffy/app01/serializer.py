@@ -126,6 +126,35 @@ class CollectionSerializers(serializers.ModelSerializer):
         return obj
 
 
+#####################购物车相关############################
+class ShoppingCarAddSerializers(serializers.Serializer):
+    account_id = serializers.IntegerField(write_only=True)
+    couse_id = serializers.IntegerField(write_only=True)
+    policy_id = serializers.IntegerField(write_only=True)
+
+class ShoppingCarShowSerializers(serializers.ModelSerializer):
+    class Meta:
+        model = models.Course
+        fields = ['name', 'course_img']
+
+    policy_list = serializers.ModelSerializer()
+    def get_policy_list(self, obj):
+        temp = {}
+        for policy in obj.policy_list.all():
+            temp[policy.id] = {
+                "valid_period": policy.get_valid_period_display(),
+                "price": policy.price
+            }
+        return temp
+
+
+class ShoppingCarUpdateSerializers(serializers.Serializer):
+    account_id = serializers.IntegerField()
+    course_id = serializers.IntegerField()
+    policy_id = serializers.IntegerField()
+
+
+
 
 
 
