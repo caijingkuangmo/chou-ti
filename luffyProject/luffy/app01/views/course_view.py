@@ -66,7 +66,34 @@ class CourseDetailView(APIView):
 
 
 class ChapterView(APIView):
+    authentication_classes = []
     def get(self, request, *args, **kwargs):
-        chapters = models.CourseChapter.objects.all()
+        course_id = kwargs.get('pk')
+        chapters = models.CourseChapter.objects.filter(course=course_id)
         chas = serializer.ChapterSerializers(chapters, many=True)
         return Response(chas.data)
+
+class SectionView(APIView):
+    authentication_classes = []
+    def get(self, request, *args, **kwargs):
+        chapter_id = kwargs.get('pk')
+        sections = models.CourseSection.objects.filter(chapter=chapter_id)
+        ss = serializer.SectionSerializers(sections, many=True)
+        return Response(ss.data)
+
+
+class CouserCommentView(APIView):
+    authentication_classes = []
+    def get(self, request, *args, **kwargs):
+        course_id = kwargs.get('pk')
+        course = models.Course.objects.filter(id=course_id).first()
+        cs = serializer.CommentSerializers(course.comment_list.all(), many=True)
+        return Response(cs.data)
+
+class PricePolicy(APIView):
+    authentication_classes = []
+    def get(self, request, *args, **kwargs):
+        course_id = kwargs.get("pk")
+        course = models.Course.objects.filter(id=course_id).first()
+        ps = serializer.PricePolicySerializers(course.price_policy.all(), many=True)
+        return Response(ps.data)

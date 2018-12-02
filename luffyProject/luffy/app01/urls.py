@@ -7,7 +7,10 @@ urlpatterns = [
     url(r'^course/$', course_view.CourseView.as_view({'get':'list'})),
     url(r'^course/(?P<pk>\d+)/$', course_view.CourseView.as_view({'get':'retrieve'})),
     url(r'^course-detail/$', course_view.CourseDetailView.as_view()),
-    url(r'^chapter/$', course_view.ChapterView.as_view()),
+    url(r'^course-chapter/(?P<pk>\d+)/$', course_view.ChapterView.as_view()),
+    url(r'^course-section/(?P<pk>\d+)/$', course_view.SectionView.as_view()),
+    url(r'^price-policy/(?P<pk>\d+)/$', course_view.PricePolicy.as_view()),
+    url(r'^course-comment/(?P<pk>\d+)/$', course_view.CouserCommentView.as_view()),
 
 
     ####################深科技相关#########################

@@ -45,6 +45,23 @@ class ChapterSerializers(serializers.ModelSerializer):
     course = serializers.CharField(source='course.name')
 
 
+class SectionSerializers(serializers.ModelSerializer):
+    class Meta:
+        model = models.CourseSection
+        fields = "__all__"
+
+class CommentSerializers(serializers.ModelSerializer):
+    class Meta:
+        model = models.Comment
+        fields = "__all__"
+
+
+class PricePolicySerializers(serializers.ModelSerializer):
+    class Meta:
+        model = models.PricePolicy
+        fields = "__all__"
+
+
 #######################深科技相关##############################
 class ArticleSourceSerializers(serializers.ModelSerializer):
     class Meta:

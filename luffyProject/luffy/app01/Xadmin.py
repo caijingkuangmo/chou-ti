@@ -54,3 +54,13 @@ site.register(models.Collection, CollectionConfig)
 class CommentConfig(ModelXadmin):
     list_display = ['content_type', 'object_id', 'p_node', 'content', 'account', 'disagree_number', 'agree_number']
 site.register(models.Comment, CommentConfig)
+
+
+class PricePolicyConfig(ModelXadmin):
+    list_display = ['content_type', 'object_id', 'valid_period', 'price']
+site.register(models.PricePolicy, PricePolicyConfig)
+
+
+class CourseSectionConfig(ModelXadmin):
+    list_display = ['chapter', 'name', 'section_type']
+site.register(models.CourseSection, CourseSectionConfig)

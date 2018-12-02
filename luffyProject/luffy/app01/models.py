@@ -112,6 +112,7 @@ class Course(models.Model):
 
     # 用于GenericForeignKey反向查询，不会生成表字段，切勿删除
     price_policy = GenericRelation("PricePolicy")
+    comment_list = GenericRelation("Comment")
 
     # 查询常见问题
     asked_question = GenericRelation("OftenAskedQuestion")
