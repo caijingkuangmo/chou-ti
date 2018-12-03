@@ -14,7 +14,7 @@ class AccountConfig(ModelXadmin):
 site.register(models.Account, AccountConfig)
 
 class CourseConfig(ModelXadmin):
-    list_display = ['name', 'sub_category', 'course_type', 'degree_course', 'level']
+    list_display = ['id', 'name', 'sub_category', 'course_type', 'degree_course', 'level']
 site.register(models.Course, CourseConfig)
 
 class DegreeCourseConfig(ModelXadmin):
@@ -57,7 +57,7 @@ site.register(models.Comment, CommentConfig)
 
 
 class PricePolicyConfig(ModelXadmin):
-    list_display = ['content_type', 'object_id', 'valid_period', 'price']
+    list_display = ['id', 'content_type', 'object_id', 'valid_period', 'price']
 site.register(models.PricePolicy, PricePolicyConfig)
 
 

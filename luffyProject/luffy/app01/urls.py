@@ -1,5 +1,5 @@
 from django.conf.urls import url
-from app01.views import course_view, news_view
+from app01.views import course_view, news_view, shopping_car_view
 
 urlpatterns = [
     ##################课程相关#########################
@@ -21,4 +21,7 @@ urlpatterns = [
     url(r'^collection/(?P<pk>\d+)/$', news_view.CollectionView.as_view({'get':'retrieve'})),
     url(r'^comment/$', news_view.CommentView.as_view({'get': 'list', 'post':'create'})),
     url(r'^comment/(?P<pk>\d+)/$', news_view.CommentView.as_view({'get': 'retrieve'})),
+
+    #######################购物车相关##################################
+    url(r'^shopping-car/$', shopping_car_view.ShoppingCarView.as_view())
 ]
