@@ -142,3 +142,5 @@ CACHES = {
     }
 }
 
+CACHE_KEY = "shopping_car_%s_%s"
+
