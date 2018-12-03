@@ -2,7 +2,7 @@
 #! /usr/bin/env python
 # __author__ = 'seven'
 
-from django_redis import get_redis_connection
+
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.core.cache import cache
@@ -11,6 +11,7 @@ import copy
 
 from app01 import serializer
 from app01 import models
+from app01.utils.redis_pool import RedisDictConnection
 
 '''
 购物车保存redis：
@@ -74,10 +75,9 @@ class ShoppingCarView(APIView):
         :return:
         '''
         account_id = request.GET.get('account_id')
-        conn = get_redis_connection()
-        course_dict_str = conn.hget('shopping_car',account_id)
-        course_dict = json.loads(course_dict_str) if course_dict_str else {}
-        return Response({'code':1000, 'data':course_dict})
+        redis_conn = RedisDictConnection('shopping_car',account_id)
+        course_dict = redis_conn.value
+        return Response({'code':1000, 'data':course_dict if course_dict else {}})
 
     def post(self, request, *args, **kwargs):
         '''
@@ -102,15 +102,11 @@ class ShoppingCarView(APIView):
                 ass = serializer.ShoppingCarShowSerializers(instance=course_obj, many=False)
                 add_data = copy.deepcopy(ass.data)
                 add_data['default_policy'] = ss.data.get('policy_id')
-                redis_conn = get_redis_connection()
+                redis_conn = RedisDictConnection('shopping_car', ss.data.get("account_id"))
                 #先把用户之前的购物车数据取出来
-                buy_car = redis_conn.hget('shopping_car', ss.data.get("account_id"))  #没有时 是不是空
-                if buy_car:
-                    buy_car = json.loads(buy_car)
-                else:
-                    buy_car = {}
+                buy_car = redis_conn.value
                 buy_car[ss.data.get('course_id')] = add_data
-                redis_conn.hset('shopping_car', ss.data.get('account_id'), json.dumps(buy_car))
+                redis_conn.set_val(buy_car)
                 return Response(ss.data)
             else:
                 return Response({'code':1001, 'message':'price policy id is error', 'data':{}})
@@ -132,12 +128,11 @@ class ShoppingCarView(APIView):
         #是不是最好还是要个序列化来做数据验证？
         account_id = request.data.get("account_id")
         course_ids = request.data.get("course_ids")
-        conn = get_redis_connection()
-        courses_dict_str = conn.hget('shopping_car', account_id)
-        courses_dict = json.loads(courses_dict_str)
+        redis_conn = RedisDictConnection('shopping_car', account_id)
+        courses_dict = redis_conn.value
         for course_id in course_ids:
             del courses_dict[str(course_id)]  #插入和读取时的数据类型 注意一下
-        conn.hset("shopping_car", account_id, json.dumps(courses_dict))
+        redis_conn.set_val(courses_dict)
         #这种删除怎么定义返回
         return Response({'code':1000, 'data':courses_dict})
 
@@ -156,11 +151,10 @@ class ShoppingCarView(APIView):
         '''
         ss = serializer.ShoppingCarUpdateSerializers(data=request.data, many=False)
         if ss.is_valid():
-            conn = get_redis_connection()
-            courses_dict_str = conn.hget("shopping_car", ss.data.get("account_id"))
-            courses_dict = json.loads(courses_dict_str)
+            redis_conn = RedisDictConnection("shopping_car", ss.data.get("account_id"))
+            courses_dict = redis_conn.value
             courses_dict[str(ss.data.get("course_id"))]['default_policy'] = ss.data.get("policy_id")
-            conn.hset('shopping_car', ss.data.get("account_id"), json.dumps(courses_dict))
+            redis_conn.set_val(courses_dict)
             return Response(ss.data)
         else:
             return Response(ss.errors)
