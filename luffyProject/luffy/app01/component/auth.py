@@ -10,4 +10,4 @@ class Authentication(BaseAuthentication):
         if not token_obj:
             raise exceptions.AuthenticationFailed('登录认证失败')
         else:
-            return token_obj.user.username, token_obj.token
+            return token_obj.user.username, token_obj

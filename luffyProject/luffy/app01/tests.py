@@ -1,6 +1,10 @@
 from django.test import TestCase
 
 # Create your tests here.
+
+'''
+redis 管道
+'''
 # import redis
 #
 # #连接池一般采用单例模式，可以和django admin里的site对象，通过导入实现单例
@@ -28,11 +32,41 @@ from django.test import TestCase
 # print(conn.lpop('k4'))
 
 
+'''
+__getattr__
+__setattr__
+'''
+# class Foo:
+#
+#     def __getattr__(self, item):
+#         print(item)
+#
+#     def __setattr__(self, key, value):
+#         print(key, value)
+#
+# obj = Foo()
+# obj.xx = 123
+# obj.xx
 
-class Foo:
 
-    def __getattr__(self, item):
-        print(item)
+'''
+redis 操作
+'''
+import redis
+redis_pool = redis.ConnectionPool(host="localhost", port=6379)
+conn = redis.Redis(connection_pool=redis_pool)
+# conn.mset({'k100':'v100', 'k200':'v200'})
+# print(conn.mget('k100', 'k200'))
+# print(conn.mget(['k100','k200']))
 
-obj = Foo()
-obj.xx
+# conn.append('k100', '00000000000000')
+
+
+# conn.set('number', 0)
+# conn.incr('number')
+# conn.incr('number')
+# conn.incr('number') #3
+
+# conn.hmset('xx', {'k1':'k1', 'k2':'k2'})
+print(conn.hmget('xx', ['k1', 'k2']))
+print(conn.hmget('xx', 'k1', 'k2'))
