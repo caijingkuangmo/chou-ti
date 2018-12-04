@@ -64,3 +64,7 @@ site.register(models.PricePolicy, PricePolicyConfig)
 class CourseSectionConfig(ModelXadmin):
     list_display = ['chapter', 'name', 'section_type']
 site.register(models.CourseSection, CourseSectionConfig)
+
+
+site.register(models.Coupon)
+site.register(models.CouponRecord)
