@@ -68,5 +68,21 @@ conn = redis.Redis(connection_pool=redis_pool)
 # conn.incr('number') #3
 
 # conn.hmset('xx', {'k1':'k1', 'k2':'k2'})
-print(conn.hmget('xx', ['k1', 'k2']))
-print(conn.hmget('xx', 'k1', 'k2'))
+# print(conn.hmget('xx', ['k1', 'k2']))
+# print(conn.hmget('xx', 'k1', 'k2'))
+
+# conn.lpush('xx', 11, 22, 33)
+# conn.lpushx('oo', 11)
+# conn.lpushx('xx', 11)
+
+conn.linsert('xx', 'BEFORE', '33', '8888')
+
+conn.lre
+
+def list_iter(name):
+    list_count = conn.llen(name)
+    for index in range(list_count):
+        yield conn.lindex(name, index)
+
+for item in list_iter('xx'):
+    print(item)

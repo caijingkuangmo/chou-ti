@@ -1,6 +1,6 @@
 from django.conf.urls import url
 from app01.views import course_view, news_view, shopping_car_view
-from app01.views import shopping_car_view2
+from app01.views import shopping_car_view2, pay_bill_view
 
 urlpatterns = [
     ##################课程相关#########################
@@ -24,6 +24,9 @@ urlpatterns = [
     url(r'^comment/(?P<pk>\d+)/$', news_view.CommentView.as_view({'get': 'retrieve'})),
 
     #######################购物车相关##################################
-    url(r'^shopping-car/$', shopping_car_view2.ShoppingCarView.as_view())
+    url(r'^shopping-car/$', shopping_car_view2.ShoppingCarView.as_view()),
     # url(r'^shopping-car/$', shopping_car_view.ShoppingCarView.as_view())
+
+    ###########################结算相关#########################
+    url(r'^payment/$', pay_bill_view.PayBillView.as_view()),
 ]

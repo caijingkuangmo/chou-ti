@@ -142,5 +142,11 @@ CACHES = {
     }
 }
 
+#购物车
 CACHE_KEY = "shopping_car_%s_%s"
 
+
+#结算
+PAYMENT_COURSE_KEY = 'payment_%s_course_%s'
+PAYMENT_COUPON_KEY = 'payment_%s_coupon_%s'
+PAYMENT_GLOBAL_COUPON_KEY = 'payment_global_coupon_%s'
