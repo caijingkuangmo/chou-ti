@@ -65,6 +65,15 @@ class PayBillView(APIView):
         ret = BaseResponse()
         try:
             user_id = request.auth.user_id
+
+            #添加前，先清空当前用户所有商品
+            course_match = settings.PAYMENT_COURSE_KEY %(user_id, '*', )
+            coupon_match = settings.PAYMENT_COUPON_KEY %(user_id, '*', )
+            global_coupon_match = settings.PAYMENT_GLOBAL_COUPON_KEY %(user_id, )
+            for key_match in [course_match, coupon_match, global_coupon_match]:
+                for key in self.redis_conn.scan_iter(key_match):
+                    self.redis_conn.delete(key)
+
             course_ids = request.data.get("course_ids")
             #判断是否课程合法性
             buy_car_course_keys = [settings.CACHE_KEY %(user_id, course_id,) for course_id in course_ids]
@@ -73,36 +82,36 @@ class PayBillView(APIView):
                 raise CourseInvalid("课程在购物车中不存在")
 
             #获取用户所有能用的优惠券
-            q1 = Q(status=1) # 未使用
-            now_date = datetime.datetime.date()
+            q1 = Q(status=0) # 未使用
+            now_date = datetime.date.today()
             q2 = Q(coupon__valid_begin_date__lte=now_date) & Q(coupon__valid_end_date__gte=now_date)  # 有效时间范围内
             q3 = Q(account=user_id) #当前用户
             coupons = models.CouponRecord.objects.filter(q1&q2&q3)
 
             #把优惠券写入redis中
             for coupon in coupons:
-                coupon_key = settings.PAYMENT_COUPON_KEY %(user_id, coupon.id,)
-                coupon_dict = {
-                    'id': coupon.id,
-                    'coupon_type':coupon.coupon.get_coupon_type_display(),
-                    'number':coupon.number,
-                    'status':coupon.status,
-                    'course_id':coupon.coupon.object_id or 0
-                }
+                if str(coupon.coupon.object_id) in [str(course_int) for course_int in course_ids] or \
+                    not coupon.coupon.object_id:
+                    coupon_key = settings.PAYMENT_COUPON_KEY %(user_id, coupon.id,)
+                    coupon_dict = {
+                        'id': coupon.id,
+                        'coupon_type':coupon.coupon.get_coupon_type_display(),
+                        'number':coupon.number,
+                        'status':coupon.status,
+                        'course_id':coupon.coupon.object_id or 0
+                    }
 
-                #判断券类型  获取   满减多少，折扣多少...
-                if coupon.coupon.coupon_type == 0: #通用券
-                    coupon_dict['money_equivalent_value'] = coupon.coupon.money_equivalent_value
-                elif coupon.coupon.coupon_type == 1: #满减券
-                    coupon_dict['money_equivalent_value'] = coupon.coupon.money_equivalent_value
-                    coupon_dict['minimum_consume'] = coupon.coupon.minimum_consume
-                elif coupon.coupon.coupon_type == 2: #折扣券
-                    coupon_dict['minimum_consume'] = coupon.coupon.off_percent
-
-                self.redis_conn.hmset(coupon_key, coupon_dict)
+                    #判断券类型  获取   满减多少，折扣多少...
+                    if coupon.coupon.coupon_type == 0: #通用券
+                        coupon_dict['money_equivalent_value'] = coupon.coupon.money_equivalent_value
+                    elif coupon.coupon.coupon_type == 1: #满减券
+                        coupon_dict['money_equivalent_value'] = coupon.coupon.money_equivalent_value
+                        coupon_dict['minimum_consume'] = coupon.coupon.minimum_consume
+                    elif coupon.coupon.coupon_type == 2: #折扣券
+                        coupon_dict['minimum_consume'] = coupon.coupon.off_percent
+                    self.redis_conn.hmset(coupon_key, coupon_dict)
 
             #把课程写入redis
-            payment_course_keys = [settings.PAYMENT_COURSE_KEY %(user_id, course_id) for course_id in course_ids]
             for course_id in course_ids:
                 buy_car_key = settings.CACHE_KEY %(user_id, course_id,)
                 payment_course_key = settings.PAYMENT_COURSE_KEY %(user_id, course_id)
@@ -111,10 +120,11 @@ class PayBillView(APIView):
                     'title': self.redis_conn.hget(buy_car_key, 'title'),
                     'course_img': self.redis_conn.hget(buy_car_key, 'course_img'),
                 }
-                default_policy = self.redis_conn.hget(buy_car_key, 'default_policy')
+                default_policy = self.redis_conn.hget(buy_car_key, 'default_policy').decode('utf-8')
                 policy_dict = json.loads(self.redis_conn.hget(buy_car_key, 'price_policy'))[default_policy]
                 course_dict.update(policy_dict)
                 course_dict['policy_id'] = default_policy
+                course_dict['coupon_id'] = 0
                 self.redis_conn.hmset(payment_course_key, course_dict)
 
             #设置默认全局优惠券
@@ -126,6 +136,7 @@ class PayBillView(APIView):
             ret.code = 1001
             ret.error = e.msg
         except Exception as e:
+            print(e)
             ret.code = 2001
             ret.error = "去结算课程失败"
 
@@ -134,34 +145,44 @@ class PayBillView(APIView):
 
     def patch(self, request, *args, **kwargs):
         '''修改优惠券，包括课程的和所有的
-            {
-                "course_id": 1,
-                "coupon_id": 5,
-                "global_coupon_id":0
-            }
+          {
+            "course_id":0,
+            "coupon_id":3
+        }
+            couse_id为0时，就是全局优惠券
         '''
         ret = BaseResponse()
         try:
             user_id = request.auth.user_id
-            course_id = request.data.get("course_id")
-            coupon_id = request.data.get("coupon_id")
-            global_coupon_id = request.data.get("global_coupon_id")
+            course_id = str(request.data.get("course_id"))
+            coupon_id = str(request.data.get("coupon_id"))
             #判断课程合法性
-            course_key = settings.PAYMENT_COURSE_KEY %(user_id, course_id)
-            if not self.redis_conn.exists(course_key):
-                raise CourseInvalid("课程不存在")
+            #分为 无值  0  非0数字
+            if course_id != '0':
+                course_key = settings.PAYMENT_COURSE_KEY %(user_id, course_id)
+                if not self.redis_conn.exists(course_key):
+                    raise CourseInvalid("课程不存在")
 
-            #判断课程优惠券合法性
-            coupon_key = settings.PAYMENT_COUPON_KEY %(user_id, coupon_id)
-            if not self.redis_conn.exists(coupon_key) and str(course_id) != '0':
-                raise CouponInvalid("课程优惠券不存在")
+            #判断优惠券合法性
+            if coupon_id != '0':
+                coupon_key = settings.PAYMENT_COUPON_KEY %(user_id, coupon_id)
+                if not self.redis_conn.exists(coupon_key):
+                    if course_id == '0':
+                        raise CouponInvalid('全局优惠券不存在')
+                    raise CouponInvalid("课程优惠券不存在")
+                else:
+                    coupon_course_id = self.redis_conn.hget(coupon_key, "course_id").decode('utf-8')
+                    if course_id != coupon_course_id:
+                        raise CouponInvalid('优惠券不合法')
 
-            #判断全局优惠券合法性
-            coupon_key = settings.PAYMENT_COUPON_KEY %(user_id, global_coupon_id)
-            if not self.redis_conn.exists(coupon_key) and str(global_coupon_id) != '0':
-                raise CouponInvalid("全局优惠券不存在")
-
-            
+            #优惠券修改
+            global_coupon_id = settings.PAYMENT_GLOBAL_COUPON_KEY % (request.auth.user_id,)
+            if course_id == "0": #全局优惠券
+                self.redis_conn.set(global_coupon_id, coupon_id)
+            else:
+                course_key = settings.PAYMENT_COURSE_KEY % (user_id, course_id)
+                self.redis_conn.hset(course_key, 'coupon_id', coupon_id)
+            ret.data = "修改优惠券成功"
 
         except CourseInvalid as e:
             ret.code = 1001
@@ -182,26 +203,23 @@ class PayBillView(APIView):
             user_id = request.auth.user_id
 
             payment = {}
-
             #获取所有的优惠券
             coupon_match = settings.PAYMENT_COUPON_KEY %(user_id, '*',)
             coupon_keys = self.redis_conn.scan_iter(coupon_match)
-            #这里可不可以 利用getall  **kwargs传入呢？前端看到啥呢？
-            coupons = [{
-                'id': self.redis_conn.hget('id'),
-                'coupon_type': self.redis_conn.hget(coupon_key, 'coupon_type'),
-                'number': self.redis_conn.hget(coupon_key, 'number'),
-                'status': self.redis_conn.hget(coupon_key, 'status'),
-                'course_id': self.redis_conn.hget(coupon_key, 'course_id'),
-            } for coupon_key in coupon_keys]
+            coupons = []
+            for coupon_key in coupon_keys:
+                coupon_dict = {}
+                coupon_items = self.redis_conn.hgetall(coupon_key)
+                for k,v in coupon_items.items():
+                    coupon_dict[k.decode('utf-8')] = v.decode('utf-8')
+                coupons.append(coupon_dict)
 
             #获取所有的课程
             course_match = settings.PAYMENT_COURSE_KEY %(user_id, '*')
             course_keys = self.redis_conn.scan_iter(course_match)
-
             course_list = []
             for course_key in course_keys:
-                course_id = self.redis_conn.hget(course_key, 'id')
+                course_id = self.redis_conn.hget(course_key, 'id').decode('utf-8')
                 course_dict = {
                     'id': course_id,
                     'title': self.redis_conn.hget(course_key, 'title'),
@@ -210,11 +228,12 @@ class PayBillView(APIView):
                     "valid_period": self.redis_conn.hget(course_key, 'valid_period'),
                     "price": self.redis_conn.hget(course_key, 'price'),
                     'coupon_list': list(filter(lambda item: item['course_id'] == course_id, coupons)),
+                    'coupon_id':self.redis_conn.hget(course_key, 'coupon_id'),
                 }
                 course_list.append(course_dict)
             payment['course_list'] = course_list
 
-            payment['global_coupon_list'] = list(filter(lambda item: item['course_id'] == 0, coupons))
+            payment['global_coupon_list'] = list(filter(lambda item: item['course_id'] == '0', coupons))
             global_coupon_key = settings.PAYMENT_GLOBAL_COUPON_KEY % (user_id,)
             payment['default_global_coupon_id'] = self.redis_conn.get(global_coupon_key)
 

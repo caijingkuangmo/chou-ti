@@ -66,5 +66,10 @@ class CourseSectionConfig(ModelXadmin):
 site.register(models.CourseSection, CourseSectionConfig)
 
 
-site.register(models.Coupon)
-site.register(models.CouponRecord)
+class CouponConfig(ModelXadmin):
+    list_display = ['name', 'coupon_type', 'money_equivalent_value', 'off_percent', 'minimum_consume', 'content_type', 'object_id', 'valid_begin_date', 'valid_end_date']
+site.register(models.Coupon, CouponConfig)
+
+class CouponRecordConfig(ModelXadmin):
+    list_display = ['coupon', 'number', 'account', 'status']
+site.register(models.CouponRecord, CouponRecordConfig)
