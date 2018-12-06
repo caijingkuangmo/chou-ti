@@ -1,6 +1,7 @@
 from django.conf.urls import url
 from app01.views import course_view, news_view, shopping_car_view
 from app01.views import shopping_car_view2, pay_bill_view
+from app01.views import order_view
 
 urlpatterns = [
     ##################课程相关#########################
@@ -29,4 +30,7 @@ urlpatterns = [
 
     ###########################结算相关#########################
     url(r'^payment/$', pay_bill_view.PayBillView.as_view()),
+
+    #####################生成订单######################
+    url(r'^order/$', order_view.OrderView.as_view()),
 ]
