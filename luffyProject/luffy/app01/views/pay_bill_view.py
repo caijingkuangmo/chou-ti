@@ -120,10 +120,12 @@ class PayBillView(APIView):
                     'title': self.redis_conn.hget(buy_car_key, 'title'),
                     'course_img': self.redis_conn.hget(buy_car_key, 'course_img'),
                 }
+
                 default_policy = self.redis_conn.hget(buy_car_key, 'default_policy').decode('utf-8')
                 policy_dict = json.loads(self.redis_conn.hget(buy_car_key, 'price_policy'))[default_policy]
                 course_dict.update(policy_dict)
                 course_dict['policy_id'] = default_policy
+
                 course_dict['coupon_id'] = 0
                 self.redis_conn.hmset(payment_course_key, course_dict)
 
@@ -149,13 +151,14 @@ class PayBillView(APIView):
             "course_id":0,
             "coupon_id":3
         }
-            couse_id为0时，就是全局优惠券
+            course_id为0时，就是全局优惠券
         '''
         ret = BaseResponse()
         try:
             user_id = request.auth.user_id
             course_id = str(request.data.get("course_id"))
             coupon_id = str(request.data.get("coupon_id"))
+
             #判断课程合法性
             #分为 无值  0  非0数字
             if course_id != '0':

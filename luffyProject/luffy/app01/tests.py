@@ -1,3 +1,4 @@
+from __future__ import division
 from django.test import TestCase
 
 # Create your tests here.
@@ -52,9 +53,9 @@ __setattr__
 '''
 redis 操作
 '''
-import redis
-redis_pool = redis.ConnectionPool(host="localhost", port=6379)
-conn = redis.Redis(connection_pool=redis_pool)
+# import redis
+# redis_pool = redis.ConnectionPool(host="localhost", port=6379)
+# conn = redis.Redis(connection_pool=redis_pool)
 # conn.mset({'k100':'v100', 'k200':'v200'})
 # print(conn.mget('k100', 'k200'))
 # print(conn.mget(['k100','k200']))
@@ -75,14 +76,57 @@ conn = redis.Redis(connection_pool=redis_pool)
 # conn.lpushx('oo', 11)
 # conn.lpushx('xx', 11)
 
-conn.linsert('xx', 'BEFORE', '33', '8888')
+# conn.linsert('xx', 'BEFORE', '33', '8888')
+#
+# conn.lre
+#
+# def list_iter(name):
+#     list_count = conn.llen(name)
+#     for index in range(list_count):
+#         yield conn.lindex(name, index)
+#
+# for item in list_iter('xx'):
+#     print(item)
 
-conn.lre
+#排序
+# p = [{'name':'Jon','age':32},{'name':'Alan','age':50},{'name':'Jon','age':23}]
+# print(sorted(p, key=lambda item: (item['name'], item['age'])))
+#
+# p.sort(key=lambda x: x['age'], reverse=True)
+# print(p)
 
-def list_iter(name):
-    list_count = conn.llen(name)
-    for index in range(list_count):
-        yield conn.lindex(name, index)
+#计数
+# from collections import defaultdict
+# data = ['a','2',2,3,4,'2','b','a','b',3,4,'a']
+# count_frq = defaultdict(int)
+# for item in data:
+#     count_frq[item] += 1
+# print(count_frq)
 
-for item in list_iter('xx'):
-    print(item)
+# from collections import Counter
+# data = ['a','2',2,3,4,'2','b','a','b',3,4,'a']
+# print(Counter(data))
+# print(Counter(data).most_common(3))  #获取出现频率最高的三个
+
+
+# 追踪错误信息
+# import traceback
+# gList = ['a','b','c','d','e','f','g']
+# def f():
+#     gList[5]
+#     return g()
+# def g():
+#     return h()
+# def h():
+#     del gList[2]
+#     return i()
+# def i():
+#     gList.append('i')
+#     print(gList[7])
+# if __name__ == '__main__':
+#     try:
+#         f()
+#     except IndexError as ex:
+#         print("Sorry,Exception occured,you accessed an element out of range")
+#         print(ex)
+#         traceback.print_exc()
