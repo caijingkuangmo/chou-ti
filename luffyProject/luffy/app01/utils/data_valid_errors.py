@@ -15,3 +15,11 @@ class CourseInvalid(Exception):
 class CouponInvalid(Exception):
     def __init__(self, msg):
         self.msg = msg
+
+class BalanceInvalid(Exception):
+    def __init__(self, msg):
+        self.msg = msg
+
+class PayMoneyInvalid(Exception):
+    def __init__(self, msg):
+        self.msg = msg
